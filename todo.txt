@@ -1,0 +1,15 @@
+I want a cable that feels like an EnderIO conduit.
+
+I wish to be able to attach it to blocks like EnderIO does when you right click
+the cable with a yeta wrench in the direction of the block.
+
+When you shift left click the part that connects to the block, a gui should pop up.
+
+In that gui you can insert modules that enables you to use the network. For example you can insert an ItemModule,
+FluidModule or EnergyModule.
+After inserting an ItemModule, you should see a tab appear for Items. In that tab you can configure the ItemModule.
+I think you should be able to configure it like an EnderIO item conduit.
+
+
+
+
