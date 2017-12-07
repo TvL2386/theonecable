@@ -2,6 +2,7 @@ package tvl2386.theonecable.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import tvl2386.theonecable.objects.blocks.Block3DWeb;
 import tvl2386.theonecable.objects.blocks.BlockBase;
 
 import java.util.ArrayList;

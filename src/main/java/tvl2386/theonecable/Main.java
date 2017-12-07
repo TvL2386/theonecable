@@ -17,12 +17,20 @@ public class Main {
     public static CommonProxy proxy;
 
     @Mod.EventHandler
-    public static void preInit(FMLPreInitializationEvent event) {}
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        proxy.preInit(event);
+    }
 
     @Mod.EventHandler
-    public static void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event)
+    {
+        proxy.init(event);
+    }
 
     @Mod.EventHandler
-    public static void postInit(FMLPostInitializationEvent event) {}
-
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        proxy.postInit(event);
+    }
 }

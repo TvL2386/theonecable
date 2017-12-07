@@ -1,5 +1,29 @@
 {
+  "forge_marker": 1,
+  "defaults": {
+    "model": "theonecable:cable",
+    "transform": {
+      "gui": {
+        "scale": 0.30,
+        "rotation": [{"x": 35},{"y": 45}]
+      }
+    }
+  },
   "variants": {
-    "normal": { "model": "theonecable:cable" }
+    "normal": [{
+      "textures": {
+        "side": "blocks/cobblestone",
+        "end": "blocks/stone",
+        "txt": "theonecable:blocks/cable0/normal_none_cable"
+      },
+      "model": "cube_column"
+    }],
+    "color": {
+      "blue": { "textures": { "txt": "theonecable:blocks/cable0/normal_none_cable" }},
+      "red": { "textures": { "txt": "theonecable:blocks/cable1/normal_none_cable" }},
+      "yellow": { "textures": { "txt": "theonecable:blocks/cable2/normal_none_cable" }},
+      "green": { "textures": { "txt": "theonecable:blocks/cable3/normal_none_cable" }},
+      "routing": { "textures": { "txt": "theonecable:blocks/cable4/normal_none_cable" }}
+    }
   }
 }
