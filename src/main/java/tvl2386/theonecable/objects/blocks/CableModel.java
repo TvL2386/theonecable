@@ -19,19 +19,19 @@ import java.util.function.Function;
  * In this case, our IModel has a number of dependant sub-components.  We bake them all individually and store them
  *   in the CompositeModel.
  * Each of the submodels needs to be loaded by vanilla as a block model which means we need a blockstates file for each of them.
- *   see blockstates/mbe05_web_subblocks
+ *   see blockstates/cable_subblocks
  */
 public class CableModel implements IModel {
 
-    public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("theonecable:blocks/mbe05_block_3d_web");
+    public static final ResourceLocation TEXTURE_SHEET = new ResourceLocation("theonecable:blocks/cable");
 
-    public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_core_model");
-    public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_up_model");
-    public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_down_model");
-    public static final ModelResourceLocation MODEL_NORTH = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_north_model");
-    public static final ModelResourceLocation MODEL_SOUTH = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_south_model");
-    public static final ModelResourceLocation MODEL_WEST = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_west_model");
-    public static final ModelResourceLocation MODEL_EAST = new ModelResourceLocation("theonecable:mbe05_web_subblocks/mbe05_block_web_east_model");
+    public static final ModelResourceLocation MODEL_CORE = new ModelResourceLocation("theonecable:cable_subblocks/cable_core_model");
+    public static final ModelResourceLocation MODEL_UP = new ModelResourceLocation("theonecable:cable_subblocks/cable_up_model");
+    public static final ModelResourceLocation MODEL_DOWN = new ModelResourceLocation("theonecable:cable_subblocks/cable_down_model");
+    public static final ModelResourceLocation MODEL_NORTH = new ModelResourceLocation("theonecable:cable_subblocks/cable_north_model");
+    public static final ModelResourceLocation MODEL_SOUTH = new ModelResourceLocation("theonecable:cable_subblocks/cable_south_model");
+    public static final ModelResourceLocation MODEL_WEST = new ModelResourceLocation("theonecable:cable_subblocks/cable_west_model");
+    public static final ModelResourceLocation MODEL_EAST = new ModelResourceLocation("theonecable:cable_subblocks/cable_east_model");
 
     public CableModel() {
     }
@@ -75,7 +75,7 @@ public class CableModel implements IModel {
             subComponent = ModelLoaderRegistry.getModel(MODEL_SOUTH);
             IBakedModel bakedModelSouth = subComponent.bake(state, format, bakedTextureGetter);
 
-            return new CompositeModel(bakedModelCore, bakedModelUp, bakedModelDown,
+            return new CompositeCableModel(bakedModelCore, bakedModelUp, bakedModelDown,
                     bakedModelWest, bakedModelEast, bakedModelNorth, bakedModelSouth);
         } catch (Exception exception) {
             System.err.println("CableModel.bake() failed due to exception:" + exception);
