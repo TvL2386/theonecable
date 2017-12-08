@@ -1,7 +1,10 @@
+item.theonecable.cable.name=Cable Item
+item.cable.name=Cable2 Item
+
 tile.theonecable.cable.name=Cable
 tile.cable.name=Cable2
 tile.netcable.name=Cable3
 tile.theonecable.netcable.name=Cable4
 
-
 tile.mbe05_block_3d_web_unlocalised_name.name=MBE05 Block 3D Web
+item.mbe05_block_3d_web_unlocalised_name.name=MBE05 Block 3D Web Item
