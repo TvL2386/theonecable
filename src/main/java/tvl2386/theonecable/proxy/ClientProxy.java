@@ -3,6 +3,7 @@ package tvl2386.theonecable.proxy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -135,6 +136,7 @@ public class ClientProxy extends CommonProxy {
     public void postInit(FMLPostInitializationEvent event)
     {
         super.postInit(event);
+        //System.out.println(I18n.format("tile.cable.name"));
     }
 
     @Override
