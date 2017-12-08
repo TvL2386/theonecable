@@ -7,11 +7,15 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import tvl2386.theonecable.objects.blocks.Block3DWeb;
+import tvl2386.theonecable.objects.blocks.BlockCable;
 
 public class CommonProxy {
 
     public static Block3DWeb block3DWeb;
     public static ItemBlock itemBlock3DWeb;
+
+    public static BlockCable blockCable;
+    public static ItemBlock itemBlockCable;
 
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -36,6 +40,15 @@ public class CommonProxy {
         itemBlock3DWeb = new ItemBlock(block3DWeb);
         itemBlock3DWeb.setRegistryName(block3DWeb.getRegistryName());
         ForgeRegistries.ITEMS.register(itemBlock3DWeb);
+
+        blockCable = new BlockCable();
+        blockCable.setUnlocalizedName("cable");
+        blockCable.setRegistryName("cable");
+        ForgeRegistries.BLOCKS.register(blockCable);
+
+        itemBlockCable = new ItemBlock(blockCable);
+        itemBlockCable.setRegistryName(blockCable.getRegistryName());
+        ForgeRegistries.ITEMS.register(itemBlockCable);
     }
 
     public void init(FMLInitializationEvent event)

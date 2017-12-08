@@ -7,11 +7,11 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 
 /**
- * Created by TheGreyGhost on 19/04/2015.
- * The ModelLoader3DWeb is used to "load" the Block3D's model instead of the Vanilla loader looking for a .json file
+ * Created by TvL2386 on 8/12/2017.
+ * The ModelLoaderCable is used to "load" the Cable's model instead of the Vanilla loader looking for a .json file
  *
  */
-public class ModelLoader3DWeb implements ICustomModelLoader {
+public class ModelLoaderCable implements ICustomModelLoader {
 
     public final String SMART_MODEL_RESOURCE_LOCATION = "models/block/smartmodel/";
 
@@ -22,7 +22,7 @@ public class ModelLoader3DWeb implements ICustomModelLoader {
                 && resourceLocation.getResourcePath().startsWith(SMART_MODEL_RESOURCE_LOCATION);
     }
 
-    // When called for our Block3DWeb's ModelResourceLocation, return our WebModel.
+    // When called for our Cable's ModelResourceLocation, return our CableModel.
     @Override
     public IModel loadModel(ResourceLocation resourceLocation) {
         String resourcePath = resourceLocation.getResourcePath();
@@ -33,8 +33,8 @@ public class ModelLoader3DWeb implements ICustomModelLoader {
         }
         String modelName = resourcePath.substring(SMART_MODEL_RESOURCE_LOCATION.length());
 
-        if (modelName.equals("webmodel")) {
-            return new WebModel();
+        if (modelName.equals("cablemodel")) {
+            return new CableModel();
         } else {
             return ModelLoaderRegistry.getMissingModel();
         }

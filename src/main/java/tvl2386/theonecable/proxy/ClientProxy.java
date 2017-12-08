@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import tvl2386.theonecable.Main;
 import tvl2386.theonecable.objects.blocks.ModelLoader3DWeb;
+import tvl2386.theonecable.objects.blocks.ModelLoaderCable;
 
 public class ClientProxy extends CommonProxy {
 
@@ -44,6 +45,41 @@ public class ClientProxy extends CommonProxy {
         final int DEFAULT_ITEM_SUBTYPE = 0;
         ModelLoader.setCustomModelResourceLocation(Main.proxy.itemBlock3DWeb, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);
 
+
+
+
+
+
+
+
+
+        ModelLoader.setCustomStateMapper(Main.proxy.blockCable, new StateMapperBase()
+        {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+                return new ModelResourceLocation("theonecable:cable_statemapper_name");
+            }
+        });
+
+        ModelLoaderRegistry.registerLoader(new ModelLoaderCable());
+
+        ModelLoader.setCustomModelResourceLocation(Main.proxy.itemBlockCable, 0, new ModelResourceLocation("theonecable:cable", "inventory"));
+
+//        StateMapperBase ignoreState = new StateMapperBase() {
+//            @Override
+//            protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+//                return new ModelResourceLocation("theonecable:cable_statemapper_name");
+//            }
+//        };
+//        ModelLoader.setCustomStateMapper(Main.proxy.blockCable, ignoreState);
+//
+//        ModelLoaderRegistry.registerLoader(new ModelLoaderCable());
+//
+//
+//        ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("theonecable:cable", "inventory");
+//        final int DEFAULT_ITEM_SUBTYPE = 0;
+//        ModelLoader.setCustomModelResourceLocation(Main.proxy.itemBlockCable, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);
+//
     }
 
     public void init(FMLInitializationEvent event)

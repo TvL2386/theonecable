@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "theonecable:cable_east_model" }
+    }
+}
