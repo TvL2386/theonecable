@@ -5,11 +5,14 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.Logger;
 import tvl2386.theonecable.proxy.CommonProxy;
 import tvl2386.theonecable.util.Reference;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
 public class Main {
+    public static Logger logger;
+
     @Mod.Instance
     public static Main instance;
 
@@ -19,6 +22,7 @@ public class Main {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        logger = event.getModLog();
         proxy.preInit(event);
     }
 
