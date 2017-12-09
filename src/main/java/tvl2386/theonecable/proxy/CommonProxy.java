@@ -6,8 +6,10 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import tvl2386.theonecable.objects.blocks.Block3DWeb;
 import tvl2386.theonecable.objects.blocks.BlockCable;
+import tvl2386.theonecable.objects.blocks.CableTileEntity;
 
 public class CommonProxy {
 
@@ -49,6 +51,9 @@ public class CommonProxy {
         itemBlockCable = new ItemBlock(blockCable);
         itemBlockCable.setRegistryName(blockCable.getRegistryName());
         ForgeRegistries.ITEMS.register(itemBlockCable);
+
+        // Each of your tile entities needs to be registered with a name that is unique to your mod.
+        GameRegistry.registerTileEntity(CableTileEntity.class, "cable_tile_entity");
     }
 
     public void init(FMLInitializationEvent event)

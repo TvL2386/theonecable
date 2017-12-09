@@ -6,24 +6,23 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import tvl2386.theonecable.Main;
 
 public class BlockCable extends Block {
 
@@ -141,4 +140,34 @@ public class BlockCable extends Block {
     public static final IUnlistedProperty<Boolean> LINK_EAST = new Properties.PropertyAdapter<Boolean>(PropertyBool.create("link_east"));
     public static final IUnlistedProperty<Boolean> LINK_NORTH = new Properties.PropertyAdapter<Boolean>(PropertyBool.create("link_north"));
     public static final IUnlistedProperty<Boolean> LINK_SOUTH = new Properties.PropertyAdapter<Boolean>(PropertyBool.create("link_south"));
+
+    @Override
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return true;
+    }
+
+    // Called when the block is placed or loaded client side to get the tile entity for the block
+    // Should return a new instance of the tile entity for the block
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new CableTileEntity();
+    }
+
+    private final int TIMER_COUNTDOWN_TICKS = 20 * 10; // duration of the countdown, in ticks = 10 seconds
+
+    // Called just after the player places a block.  Start the tileEntity's timer
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof CableTileEntity) { // prevent a crash if not the right type, or is null
+            CableTileEntity tileEntityData = (CableTileEntity)tileEntity;
+            tileEntityData.setTicksLeftTillDisappear(TIMER_COUNTDOWN_TICKS);
+        }
+    }
+
+
+
 }
