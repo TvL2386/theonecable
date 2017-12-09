@@ -1,15 +1,263 @@
 package tvl2386.theonecable.objects.blocks;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+import tvl2386.theonecable.Main;
 
-public class CableTileEntity extends TileEntity implements ITickable {
+//public class CableTileEntity extends TileEntity implements ITickable, IEnergyReceiver, IEnergyProvider, IEnergyStorage {
+public class CableTileEntity extends TileEntity implements ITickable, IEnergyStorage {
 
-    @Override
-    public void update() {
+    private int storedEnergy;
+    private int maxStoredEnergy;
 
+    public CableTileEntity(int storedEnergy, int maxStoredEnergy)
+    {
+        this.storedEnergy = storedEnergy;
+        this.maxStoredEnergy = maxStoredEnergy;
     }
 
+    public CableTileEntity()
+    {
+        new CableTileEntity(0, 10000);
+    }
+
+    // ITickable methods
+    @Override
+    public void update() {
+        //Main.logger.info("stored: "+this.storedEnergy+" max: "+this.maxStoredEnergy);
+    }
+
+//    // IEnergyReceiver methods
+//    /**
+//     * Adds energy to the storage. Returns quantity of energy that was accepted.
+//     *
+//     * @param maxReceive
+//     *            Maximum amount of energy to be inserted.
+//     * @param simulate
+//     *            If TRUE, the insertion will only be simulated.
+//     * @return Amount of energy that was (or would have been, if simulated) accepted by the storage.
+//     */
+//    @Override
+//    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+//        return receiveEnergy(maxReceive, simulate);
+//    }
+//
+//    /**
+//     * Returns the amount of energy currently stored.
+//     */
+//    @Override
+//    public int getEnergyStored(EnumFacing from) {
+//        return this.storedEnergy;
+//    }
+//
+//    /**
+//     * Returns the maximum amount of energy that can be stored.
+//     */
+//    @Override
+//    public int getMaxEnergyStored(EnumFacing from) {
+//        return this.maxStoredEnergy;
+//    }
+//
+//    @Override
+//    public boolean canConnectEnergy(EnumFacing from) {
+//        return true;
+//    }
+//
+//    // IEnergyProvider methods
+//    @Override
+//    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+//        return extractEnergy(maxExtract, simulate);
+//    }
+
+    // IEnergyStorage methods
+    /**
+     * Adds energy to the storage. Returns quantity of energy that was accepted.
+     *
+     * @param maxReceive Maximum amount of energy to be inserted.
+     * @param simulate   If TRUE, the insertion will only be simulated.
+     * @return Amount of energy that was (or would have been, if simulated) accepted by the storage.
+     */
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        //Main.logger.info("receiveEnergy(maxReceive: "+maxReceive+" simulate: "+simulate+");");
+        int canReceive = this.maxStoredEnergy - this.storedEnergy;
+
+        if(canReceive > maxReceive)
+            canReceive = maxReceive;
+
+        if(!simulate)
+            this.storedEnergy += canReceive;
+
+        return canReceive;
+    }
+
+    /**
+     * Removes energy from the storage. Returns quantity of energy that was removed.
+     *
+     * @param maxExtract Maximum amount of energy to be extracted.
+     * @param simulate   If TRUE, the extraction will only be simulated.
+     * @return Amount of energy that was (or would have been, if simulated) extracted from the storage.
+     */
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        //Main.logger.info("extractEnergy(maxExtract: "+maxExtract+" simulate: "+simulate+");");
+        int canExtract = this.storedEnergy;
+
+        if(canExtract > maxExtract)
+            canExtract = maxExtract;
+
+        if(!simulate)
+            this.storedEnergy -= canExtract;
+
+        return canExtract;
+    }
+
+    /**
+     * Returns the amount of energy currently stored.
+     */
+    @Override
+    public int getEnergyStored() {
+        //Main.logger.info("getEnergyStored();");
+        return this.storedEnergy;
+    }
+
+    /**
+     * Returns the maximum amount of energy that can be stored.
+     */
+    @Override
+    public int getMaxEnergyStored() {
+        //Main.logger.info("getMaxEnergyStored();");
+        return this.maxStoredEnergy;
+    }
+
+    /**
+     * Returns if this storage can have energy extracted.
+     * If this is false, then any calls to extractEnergy will return 0.
+     */
+    @Override
+    public boolean canExtract() {
+        //Main.logger.info("canExtract();");
+        return true;
+    }
+
+    /**
+     * Used to determine if this storage can receive energy.
+     * If this is false, then any calls to receiveEnergy will return 0.
+     */
+    @Override
+    public boolean canReceive() {
+        //Main.logger.info("canReceive();");
+        return true;
+    }
+
+    // Forge energy
+    private IEnergyStorage[] sidedHandlers = new IEnergyStorage[6];
+    private IEnergyStorage nullHandler;
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityEnergy.ENERGY) {
+            return true;
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityEnergy.ENERGY) {
+            if (facing == null) {
+                if (nullHandler == null) {
+                    createNullHandler();
+                }
+                return (T) nullHandler;
+            } else {
+                if (sidedHandlers[facing.ordinal()] == null) {
+                    createSidedHandler(facing);
+                }
+                return (T) sidedHandlers[facing.ordinal()];
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    private void createSidedHandler(EnumFacing facing) {
+        Main.logger.info("createSidedHandler for "+facing.getName());
+
+        sidedHandlers[facing.ordinal()] = new IEnergyStorage() {
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate) {
+                return CableTileEntity.this.receiveEnergyFacing(facing, maxReceive, simulate);
+            }
+
+            @Override
+            public int extractEnergy(int maxExtract, boolean simulate) {
+                return CableTileEntity.this.extractEnergy(maxExtract, simulate);
+            }
+
+            @Override
+            public int getEnergyStored() {
+                return CableTileEntity.this.getEnergyStored();
+            }
+
+            @Override
+            public int getMaxEnergyStored() {
+                return CableTileEntity.this.getMaxEnergyStored();
+            }
+
+            @Override
+            public boolean canExtract() {
+                return true;
+            }
+
+            @Override
+            public boolean canReceive() {
+                return true;
+            }
+        };
+    }
+
+    private int receiveEnergyFacing(EnumFacing facing, int maxReceive, boolean simulate) {
+        Main.logger.info("receiving energy from "+facing.getName()+": maxReceive: "+maxReceive+" simulate: "+simulate);
+        return receiveEnergy(maxReceive, simulate);
+    }
+
+    private void createNullHandler() {
+        nullHandler = new IEnergyStorage() {
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate) {
+                return 0;
+            }
+
+            @Override
+            public int extractEnergy(int maxExtract, boolean simulate) {
+                return 0;
+            }
+
+            @Override
+            public int getEnergyStored() {
+                return CableTileEntity.this.getEnergyStored();
+            }
+
+            @Override
+            public int getMaxEnergyStored() {
+                return CableTileEntity.this.getMaxEnergyStored();
+            }
+
+            @Override
+            public boolean canExtract() {
+                return false;
+            }
+
+            @Override
+            public boolean canReceive() {
+                return false;
+            }
+        };
+    }
 //    private final int INVALID_VALUE = -1;
 //    private int ticksLeftTillDisappear = INVALID_VALUE;  // the time (in ticks) left until the block disappears
 //
