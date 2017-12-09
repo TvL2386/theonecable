@@ -7,9 +7,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -155,18 +153,20 @@ public class BlockCable extends Block {
         return new CableTileEntity();
     }
 
-    private final int TIMER_COUNTDOWN_TICKS = 20 * 10; // duration of the countdown, in ticks = 10 seconds
+//    private final int TIMER_COUNTDOWN_TICKS = 20 * 10; // duration of the countdown, in ticks = 10 seconds
+//
+//    // Called just after the player places a block.  Start the tileEntity's timer
+//    @Override
+//    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+//        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+//        TileEntity tileEntity = worldIn.getTileEntity(pos);
+//        if (tileEntity instanceof CableTileEntity) { // prevent a crash if not the right type, or is null
+//            CableTileEntity tileEntityData = (CableTileEntity)tileEntity;
+//            tileEntityData.setTicksLeftTillDisappear(TIMER_COUNTDOWN_TICKS);
+//        }
+//    }
 
-    // Called just after the player places a block.  Start the tileEntity's timer
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof CableTileEntity) { // prevent a crash if not the right type, or is null
-            CableTileEntity tileEntityData = (CableTileEntity)tileEntity;
-            tileEntityData.setTicksLeftTillDisappear(TIMER_COUNTDOWN_TICKS);
-        }
-    }
+
 
 
 
